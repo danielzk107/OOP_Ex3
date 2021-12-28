@@ -47,7 +47,6 @@ class GUI:
                     running = False
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     (nodeid, node) = GraphAlgo.Hit_Node(mouse[0], mouse[1], self.graph)
-                    print(mouse[0], mouse[1])
                     if shortestpathclicked and node is not None:
                         self.Refresh_Topof_Screen()
                         if firstnode == -1:
@@ -78,7 +77,6 @@ class GUI:
                     if 305 <= mouse[0] <= 440 and 0 <= mouse[1] <= 50:
                         try:
                             (centrenodeid, throwaway) = self.algo.centerPoint()
-                            print("AAAAAAA")
                             if centrenodeid is None:
                                 self.centre_text = self.font.render("Graph not connected", True, (255, 255, 255))
                             else:

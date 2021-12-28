@@ -1,7 +1,6 @@
 import json
 import random
 import sys
-import pygame
 from queue import PriorityQueue
 from typing import List
 import DiGraph
@@ -19,8 +18,11 @@ def Hit_Node(x: float, y: float, graph: DiGraph.DiGraph) -> (int, Node.Node):  #
 
 class GraphAlgo:
 
-    def __init__(self):
-        self.graph = DiGraph.DiGraph()
+    def __init__(self, graph = None):
+        if graph is None:
+            self.graph = DiGraph.DiGraph()
+        else:
+            self.graph = graph
         self.SPDistList = {}
         self.ranSPD = False
         self.modcount = self.graph.modcount
@@ -33,6 +35,7 @@ class GraphAlgo:
 
     def load_from_json(self, file_name: str) -> bool:
         try:
+            print(file_name)
             temp = open(file_name, 'r')
             jsonfile = json.load(temp)
             for x in jsonfile["Nodes"]:
@@ -47,6 +50,7 @@ class GraphAlgo:
                 id2 = int(str(x["dest"]))
                 self.graph.add_edge(id1, id2, x["w"])
         except FileNotFoundError:
+            temp.close()
             raise Exception("File not found")
         except TypeError:
             temp.close()
@@ -111,6 +115,7 @@ class GraphAlgo:
         return self.SPDistList[id1, id2]
 
     def shortest_path(self, id1: int, id2: int) -> (float, list):
+        # Simple Dijkstra's algorithm
         visited = list()
         parent = {}
         pq = PriorityQueue()
@@ -136,13 +141,13 @@ class GraphAlgo:
         output.reverse()
         return dist[id2], output
 
-    def getlistofparent(self, id: int, parent: dict, l: list) -> list:
-        node = self.graph.nodelist[id]
+    def getlistofparent(self, idnum: int, parent: dict, l: list) -> list:
+        node = self.graph.nodelist[idnum]
         node.tag = 1
-        l.append(id)
-        if parent[id] == -1:
+        l.append(idnum)
+        if parent[idnum] == -1:
             return l
-        return self.getlistofparent(parent[id], parent, l)
+        return self.getlistofparent(parent[idnum], parent, l)
 
     def DFSIn(self, a: int):
         node = self.graph.nodelist[a]
@@ -251,6 +256,10 @@ class GraphAlgo:
                 continue
             x = node.x
             y = node.y
+            if x == y == 0:
+                y = 60
+                output.add_node(n, (x, y + 50, 0))
+                continue
             count = 1
             while x > xdiff:
                 if x < 1:
@@ -274,8 +283,13 @@ class GraphAlgo:
                     else:
                         y = float(str(y)[1:])
             while x < (800 / 15):
+                if x == 0:
+                    break
                 x *= 10
             while y < (600 / 15):
+                if y == 0:
+                    y = 10
+                    break
                 y *= 10
             output.add_node(n, (x, y + 50, 0))
         for edgeid in self.graph.edgelist:

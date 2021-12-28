@@ -18,8 +18,8 @@ def check():
     (7, 6.806805834715163)
     ([1,3,4,2],3.5)
     """
-    # check0()
-    # check1()
+    check0()
+    check1()
     check2()
 
 
@@ -75,7 +75,7 @@ def check2():
     g_algo = GraphAlgo()
     file = '../data/A5.json'
     g_algo.load_from_json(file)
-    # g_algo.get_graph().remove_edge(13, 14)
+    g_algo.get_graph().remove_edge(13, 14)
     g_algo.save_to_json(file + "_edited")
     dist, path = g_algo.shortest_path(4, 37)
     print(dist, path)
@@ -87,7 +87,7 @@ def check2():
     print(dist, path)
     print(g_algo.shortest_path(1, 3))
     print(g_algo.TSP([1, 2, 3, 6, 10, 21]))
-    # g_algo.plot_graph()
+    g_algo.plot_graph()
 
 
 def check3():

@@ -49,7 +49,7 @@ class DiGraph:
             return False
         if pos is None:
             self.size += 1
-            node = Node.Node(node_id, 0.0, 0.0, 0.0)
+            node = Node.Node(node_id, 0.0, 0.0, -1)
             self.nodelist[node_id] = node
             self.modcount += 1
             return True
