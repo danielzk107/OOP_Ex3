@@ -2,7 +2,7 @@ import unittest
 import GraphAlgo
 
 
-class Tests(unittest.TestCase):
+class TestGraphAlgo(unittest.TestCase):
 
     def test_shortest_path(self):
         algo = GraphAlgo.GraphAlgo()
