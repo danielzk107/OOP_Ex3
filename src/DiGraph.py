@@ -70,12 +70,12 @@ class DiGraph:
                 othernode = self.nodelist[x]
                 edge = node.inedgelist[x]
                 del self.edgelist[edge.idnum]
-                othernode.RemoveEdge(node_id, 0)
+                othernode.RemoveEdge(node_id, 1)
             for x in node.outconnected:
                 othernode = self.nodelist[x]
                 edge = node.outedgelist[x]
                 del self.edgelist[edge.idnum]
-                othernode.RemoveEdge(node_id, 1)
+                othernode.RemoveEdge(node_id, 0)
         except IndexError:
             raise IndexError('One of the nodes/edges connected to node number ', node_id, ' is not in the graph')
         return True
