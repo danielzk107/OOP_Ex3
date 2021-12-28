@@ -3,14 +3,12 @@ from src import Edge
 
 
 class DiGraph:
-    """This abstract class represents an interface of a graph."""
 
     def __init__(self):
         self.nodelist = {}
         self.size = 0
         self.edgelist = {}
         self.modcount = 0
-
 
     def v_size(self) -> int:
         return self.size
@@ -54,19 +52,30 @@ class DiGraph:
             self.nodelist[node_id] = node
             self.modcount += 1
             return True
-        node = Node.Node(node_id, pos[0], pos[1], pos[2])
+        node = Node.Node(node_id, float(pos[0]), float(pos[1]), float(pos[2]))
         self.nodelist[node_id] = node
         self.modcount += 1
         return True
 
     def remove_node(self, node_id: int) -> bool:
-        """
-        Removes a node from the graph.
-        @param node_id: The node ID
-        @return: True if the node was removed successfully, False o.w.
-        Note: if the node id does not exists the function will do nothing
-        """
-        raise NotImplementedError
+        if node_id not in self.nodelist:
+            return False
+        try:
+            node = self.nodelist[node_id]
+            del self.nodelist[node_id]
+            for x in node.inconnected:
+                othernode = self.nodelist[x]
+                edge = node.inedgelist[x]
+                del self.edgelist[edge.idnum]
+                othernode.RemoveEdge(node_id, 0)
+            for x in node.outconnected:
+                othernode = self.nodelist[x]
+                edge = node.outedgelist[x]
+                del self.edgelist[edge.idnum]
+                othernode.RemoveEdge(node_id, 1)
+        except IndexError:
+            raise IndexError('One of the nodes/edges connected to node number ', node_id, ' is not in the graph')
+        return True
 
     def remove_edge(self, node_id1: int, node_id2: int) -> bool:
         if node_id1 not in self.nodelist or node_id2 not in self.nodelist:

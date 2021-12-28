@@ -1,30 +1,44 @@
-import array
 import json
+import random
 import sys
+import pygame
 from queue import PriorityQueue
 from typing import List
-from src import Node
-from src import Edge
 from src import DiGraph
+from src import Node
+from src import GUI
+
+
+def Hit_Node(x: float, y: float, graph: DiGraph.DiGraph) -> (int, Node.Node):  #A function that checks if there is a node in close proximity to the given coordinates (the function will return the first node it encounters)
+    for nodeid in graph.nodelist:
+        node = graph.nodelist[nodeid]
+        if abs(node.x - x) <= 8 and abs(node.y - y) <= 8:
+            return nodeid, node
+    return -1, None
 
 
 class GraphAlgo:
-    """This abstract class represents an interface of a graph."""
 
-    def __init__(self, graph: DiGraph.DiGraph):
-        self.graph = graph
+    def __init__(self):
+        self.graph = DiGraph.DiGraph()
         self.SPDistList = {}
         self.ranSPD = False
 
     def get_graph(self) -> DiGraph:
         return self.graph
 
+    def set_graph(self, newgraph: DiGraph.DiGraph):
+        self.graph = newgraph
+
     def load_from_json(self, file_name: str) -> bool:
         try:
             temp = open(file_name, 'r')
             jsonfile = json.load(temp)
             for x in jsonfile["Nodes"]:
-                pos = str(x["pos"])
+                try:
+                    pos = str(x["pos"])
+                except KeyError:
+                    pos = "0,0,-1"  # making z -1 to distinguish between position-less nodes and nodes with position (0,0)
                 posarray = tuple(pos.split(","))
                 self.graph.add_node(x["id"], posarray)
             for x in jsonfile["Edges"]:
@@ -41,14 +55,28 @@ class GraphAlgo:
 
     def save_to_json(self, file_name: str) -> bool:
         try:
-            with open(file_name) as newfile:
-                json.dump(self.graph.edgelist, newfile)
-                json.dump(self.graph.nodelist, newfile)
-        except FileExistsError:
-            raise Exception("File already exists")
-        except Exception:
-            raise Exception("Unknown problem arose")
-        return True
+            temp = open(file_name, 'r')
+            print("File already exists")
+            return False
+        except FileNotFoundError:
+            try:
+                with open(file_name, 'w', newline="") as newfile:
+                    nodeslist = list()
+                    for x in self.graph.nodelist:
+                        pos = (self.graph.nodelist[x].x, self.graph.nodelist[x].y, self.graph.nodelist[x].z).__str__()
+                        temp = pos.replace("(", "")
+                        newpos = temp.replace(")", "")
+                        nodeslist.append({"id": self.graph.nodelist[x].idnum, "pos": newpos})
+                    edgeslist = list()
+                    for x in self.graph.edgelist:
+                        edgeslist.append({"src": self.graph.edgelist[x].src, "dest": self.graph.edgelist[x].dest,
+                                          "w": self.graph.edgelist[x].weight})
+                    json.dump({"Nodes": nodeslist, "Edges": edgeslist}, newfile, indent=4)
+            except FileExistsError:
+                raise Exception("File already exists")
+            except Exception:
+                raise Exception("Unknown problem arose")
+            return True
 
     def shortest_path_dist(self, id1: int, id2: int) -> float:
         if self.ranSPD:
@@ -58,9 +86,10 @@ class GraphAlgo:
         self.ranSPD = True
         # Setting all the values to the max num/to the weight of the edge:
         for x in self.graph.nodelist:
+            xnode = self.graph.nodelist[x]
             for y in self.graph.nodelist:
-                if y.idnum in x.outedgelist:
-                    self.SPDistList[x, y] = x.outedgelist[y].weight
+                if y in xnode.outedgelist:
+                    self.SPDistList[x, y] = xnode.outedgelist[y].weight
                 else:
                     self.SPDistList[x, y] = sys.float_info.max / 2
         # Finding the best path for each two nodes:
@@ -99,11 +128,10 @@ class GraphAlgo:
 
     def getlistofparent(self, id: int, parent: dict, l: list) -> list:
         l.append(id)
-        print(id)
         if parent[id] == -1:
             return l
         return self.getlistofparent(parent[id], parent, l)
-    # def shortest_path_helper(self, ):
+
     def DFSIn(self, a: int):
         node = self.graph.nodelist[a]
         node.tag = 1
@@ -119,16 +147,24 @@ class GraphAlgo:
                 self.DFSOut(x)
 
     def IsConnected(self):
-        self.DFSOut(0)
+        num = float('inf')
+        for x in self.graph.nodelist:  # Making sure we run the DFS functions on a real node in the graph
+            num = x
+        if num == float('inf'):
+            print("Graph is empty")
+            return False
+        self.DFSOut(num)
         for x in self.graph.nodelist:
-            if x.tag != 1:
+            node = self.graph.nodelist[x]
+            if node.tag != 1:
                 return False
-            x.tag = 0
-        self.DFSIn(0)
+            node.tag = 0
+        self.DFSIn(num)
         for x in self.graph.nodelist:
-            if x.tag != 1:
+            node = self.graph.nodelist[x]
+            if node.tag != 1:
                 return False
-            x.tag = 0
+            node.tag = 0
         return True
 
     def TSP(self, node_lst: List[int]) -> (List[int], float):
@@ -147,23 +183,69 @@ class GraphAlgo:
             maxdist = sys.float_info.min
             for y in self.graph.nodelist:
                 if x != y:
-                    if self.shortest_path_dist(x.idnum, y.idnum) > maxdist:
-                        maxdist = self.shortest_path_dist(x.idnum, y.idnum)
-
-            maximumshortestpatharr[x.idnum] = maxdist
+                    if self.shortest_path_dist(x, y) > maxdist:
+                        maxdist = self.shortest_path_dist(x, y)
+            maximumshortestpatharr[x] = maxdist
         minimum = sys.float_info.max
         centreindex = 0
         for x in self.graph.nodelist:
-            if maximumshortestpatharr[x.idnum] < minimum:
-                minimum = maximumshortestpatharr[x.idnum]
-                centreindex = x.idnum
+            if maximumshortestpatharr[x] < minimum:
+                minimum = maximumshortestpatharr[x]
+                centreindex = x
         return centreindex, minimum
 
     def plot_graph(self) -> None:
-        """
-        Plots the graph.
-        If the nodes have a position, the nodes will be placed there.
-        Otherwise, they will be placed in a random but elegant manner.
-        @return: None
-        """
-        raise NotImplementedError
+        gui = GUI.GUI(self.GetfixedGraph(), self)
+        gui.PrintGraph()
+
+    def xAndyDiff(self) -> (float, float):
+        x = y = 0
+        for node1 in self.graph.nodelist:
+            for node2 in self.graph.nodelist:
+                if abs((self.graph.nodelist[node2].x - self.graph.nodelist[node1].x)) > x:
+                    x = abs((self.graph.nodelist[node2].x - self.graph.nodelist[node1].x))
+                if abs((self.graph.nodelist[node2].y - self.graph.nodelist[node1].y)) > y:
+                    y = abs((self.graph.nodelist[node2].y - self.graph.nodelist[node1].y))
+        return x, y
+
+    def GetfixedGraph(self) -> DiGraph.DiGraph:
+        output = DiGraph.DiGraph()
+        (xdiff, ydiff) = self.xAndyDiff()
+        for n in self.graph.nodelist:
+            node = self.graph.nodelist[n]
+            if node.z == -1:
+                output.add_node(n, (random.uniform(40, 550), random.uniform(55, 400), 0))
+                continue
+            x = node.x
+            y = node.y
+            count = 1
+            while x > xdiff:
+                if x < 1:
+                    x=float("0."+str(x)[3:])
+                    x=x / pow(10, count)
+                    count += 1
+                else:
+                    if float(str(x)[1:]) == 0:
+                        x=x / 10.0
+                    else:
+                        x=float(str(x)[1:])
+            count = 1
+            while y > ydiff:
+                if y < 1:
+                    y=float("0."+str(y)[3:])
+                    y=y / pow(10, count)
+                    count += 1
+                else:
+                    if float(str(y)[1:]) == 0:
+                        y=y / 10
+                    else:
+                        y=float(str(y)[1:])
+            while x < (800 / 15):
+                x *= 10
+            while y < (600 / 15):
+                y *= 10
+            output.add_node(n, (x, y + 50, 0))
+        for edgeid in self.graph.edgelist:
+            edge = self.graph.edgelist[edgeid]
+            output.add_edge(edge.src, edge.dest, edge.weight)
+        return output
