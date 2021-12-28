@@ -15,9 +15,7 @@ class Node:
         self.outedgelist = {}
         self.outedgelistbyweight = {}
 
-    def AddEdge(self, otherid, edge, direction):  #if direction is 1, the edge goes out, if it is 0, then the edge goes in.
-        # if otherid not in self.edgelist:
-        #     self.edgelist[otherid] = {}
+    def AddEdge(self, otherid: int, edge: Edge.Edge, direction: int):  #if direction is 1, the edge goes out, if it is 0, then the edge goes in.
         if direction == 1:
             if otherid not in self.outedgelist:
                 self.outedgelist[otherid] = edge
@@ -29,7 +27,7 @@ class Node:
                 self.inedgelistbyweight[otherid] = edge.weight
                 self.inconnected.append(otherid)
 
-    def RemoveEdge(self, otherid, direction) -> Edge:
+    def RemoveEdge(self, otherid: int, direction: int) -> Edge:
         output = None
         if direction == 1:
             if otherid in self.outedgelist:

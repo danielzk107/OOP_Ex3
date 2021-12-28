@@ -1,3 +1,5 @@
+import sys
+
 import pygame
 import random
 from time import sleep
@@ -198,10 +200,26 @@ class GUI:
                             self.add_node_text = self.font.render("Try again", True, (255, 255, 255))
                         else:
                             self.graph.add_node(self.graph.size, (mouse[0], mouse[1], 0))
-                            self.algo.graph.add_node(self.algo.graph.size, (mouse[0], mouse[1], 0))
-                            node = Node.Node(self.graph.size-1, mouse[0], mouse[1], 0)
+                            node = Node.Node(self.graph.size, mouse[0], mouse[1], 0)
+                            self.Add_Node_To_Graph(node)
                             self.Draw_node(node)
                             self.add_node_text = self.font.render("Node Added", True, (255, 255, 255))
                     condition = False
                     self.Refresh_Topof_Screen()
                     return
+
+    def Add_Node_To_Graph(self, node: Node.Node):
+        maxx = sys.float_info.min
+        minx = sys.float_info.max
+        maxy = sys.float_info.min
+        miny = sys.float_info.max
+        for nodeid in self.algo.graph.nodelist:
+            node = self.algo.graph.nodelist[nodeid]
+            miny = min(node.y, miny)
+            maxy = max(node.y, maxy)
+            minx = min(node.x, minx)
+            maxx = max(node.x, maxx)
+        x = random.uniform(minx, maxx)
+        y = random.uniform(miny, maxy)
+        if not self.algo.graph.add_node(self.algo.graph.size, (x, y, 0)):
+            print("A")

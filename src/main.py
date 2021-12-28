@@ -19,8 +19,8 @@ def check():
     ([1,3,4,2],3.5)
     """
     # check0()
-    check1()
-    # check2()
+    # check1()
+    check2()
 
 
 def check0():
@@ -45,7 +45,7 @@ def check0():
     g_algo = GraphAlgo()
     g_algo.graph = g
     print(g_algo.shortest_path(0, 3))
-    # g_algo.plot_graph()
+    g_algo.plot_graph()
 
 
 def check1():
@@ -56,15 +56,15 @@ def check1():
     g_algo = GraphAlgo()  # init an empty graph - for the GraphAlgo
     file = "../data/A0.json"
     g_algo.load_from_json(file)  # init a GraphAlgo from a json file
-    # g_algo.graph.remove_node(0)
-    # print(g_algo.shortest_path(0, 3))
-    # print(g_algo.shortest_path(3, 1))
-    # print(g_algo.centerPoint())
-    # g_algo.save_to_json("../data/T0_saved.json")
-    # g_algo.load_from_json(file)
-    # print(g_algo.shortest_path(0, 3))
-    # print(g_algo.shortest_path(3, 1))
-    # print(g_algo.centerPoint())
+    g_algo.graph.remove_node(0)
+    print(g_algo.shortest_path(0, 3))
+    print(g_algo.shortest_path(3, 1))
+    print(g_algo.centerPoint())
+    g_algo.save_to_json("../data/T0_saved.json")
+    g_algo.load_from_json(file)
+    print(g_algo.shortest_path(0, 3))
+    print(g_algo.shortest_path(3, 1))
+    print(g_algo.centerPoint())
     g_algo.plot_graph()
 
 
@@ -85,8 +85,9 @@ def check2():
     print(dist, path)
     dist, path = g_algo.shortest_path(2, 20)
     print(dist, path)
-    print(g_algo.TSP([1, 2, 3]))
-    g_algo.plot_graph()
+    print(g_algo.shortest_path(1, 3))
+    print(g_algo.TSP([1, 2, 3, 6, 10, 21]))
+    # g_algo.plot_graph()
 
 
 def check3():
