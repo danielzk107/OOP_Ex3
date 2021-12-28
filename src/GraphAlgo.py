@@ -49,15 +49,19 @@ class GraphAlgo:
         except FileNotFoundError:
             raise Exception("File not found")
         except TypeError:
+            temp.close()
             raise Exception("The given file is not formatted correctly")
         except Exception:
+            temp.close()
             raise Exception("Unknown problem arose")
+        temp.close()
         return True
 
     def save_to_json(self, file_name: str) -> bool:
         try:
             temp = open(file_name, 'r')
             print("File already exists")
+            temp.close()
             return False
         except FileNotFoundError:
             try:
@@ -76,7 +80,9 @@ class GraphAlgo:
             except FileExistsError:
                 raise Exception("File already exists")
             except Exception:
+                newfile.close()
                 raise Exception("Unknown problem arose")
+            newfile.close()
             return True
 
     def shortest_path_dist(self, id1: int, id2: int) -> float:
