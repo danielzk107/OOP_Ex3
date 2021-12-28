@@ -48,10 +48,12 @@ class DiGraph:
         if node_id in self.nodelist:
             return False
         if pos is None:
+            self.size += 1
             node = Node.Node(node_id, 0.0, 0.0, 0.0)
             self.nodelist[node_id] = node
             self.modcount += 1
             return True
+        self.size += 1
         node = Node.Node(node_id, float(pos[0]), float(pos[1]), float(pos[2]))
         self.nodelist[node_id] = node
         self.modcount += 1
@@ -61,6 +63,7 @@ class DiGraph:
         if node_id not in self.nodelist:
             return False
         try:
+            self.size -= 1
             node = self.nodelist[node_id]
             del self.nodelist[node_id]
             for x in node.inconnected:

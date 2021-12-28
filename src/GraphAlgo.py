@@ -23,6 +23,7 @@ class GraphAlgo:
         self.graph = DiGraph.DiGraph()
         self.SPDistList = {}
         self.ranSPD = False
+        self.modcount = self.graph.modcount
 
     def get_graph(self) -> DiGraph:
         return self.graph
@@ -79,7 +80,7 @@ class GraphAlgo:
             return True
 
     def shortest_path_dist(self, id1: int, id2: int) -> float:
-        if self.ranSPD:
+        if self.ranSPD and self.modcount == self.graph.modcount:
             if self.SPDistList[id1, id2] < 0 or self.SPDistList[id1, id2] >= sys.float_info.max / 2:
                 return -1
             return self.SPDistList[id1, id2]
