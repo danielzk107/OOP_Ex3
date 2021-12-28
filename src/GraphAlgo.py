@@ -4,9 +4,9 @@ import sys
 import pygame
 from queue import PriorityQueue
 from typing import List
-from src import DiGraph
-from src import Node
-from src import GUI
+import DiGraph
+import Node
+import GUI
 
 
 def Hit_Node(x: float, y: float, graph: DiGraph.DiGraph) -> (int, Node.Node):  #A function that checks if there is a node in close proximity to the given coordinates (the function will return the first node it encounters)
@@ -87,6 +87,7 @@ class GraphAlgo:
                 return float('inf')
             return self.SPDistList[id1, id2]
         self.ranSPD = True
+        self.modcount = self.graph.modcount
         # Setting all the values to the max num/to the weight of the edge:
         for x in self.graph.nodelist:
             xnode = self.graph.nodelist[x]

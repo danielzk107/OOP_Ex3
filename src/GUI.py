@@ -3,13 +3,14 @@ import sys
 import pygame
 import random
 from time import sleep
-from src import DiGraph
-from src import Node
-from src import Edge
-from src import GraphAlgo
+import DiGraph
+import Node
+import Edge
+import GraphAlgo
+
 
 class GUI:
-    def __init__(self, graph: DiGraph.DiGraph, algo: GraphAlgo.GraphAlgo):
+    def __init__(self, graph: DiGraph.DiGraph, algo: GraphAlgo):
         self.graph = graph
         self.algo = algo
         pygame.init()
@@ -77,6 +78,7 @@ class GUI:
                     if 305 <= mouse[0] <= 440 and 0 <= mouse[1] <= 50:
                         try:
                             (centrenodeid, throwaway) = self.algo.centerPoint()
+                            print("AAAAAAA")
                             if centrenodeid is None:
                                 self.centre_text = self.font.render("Graph not connected", True, (255, 255, 255))
                             else:
@@ -102,7 +104,6 @@ class GUI:
                         while not condition:
                             num = random.randint(0, 1000)
                             condition = self.algo.save_to_json("Graph" + str(num) + ".json")
-                        sleep(0.5)
                         final_display_text1 = self.font.render("Graph saved as Graph" + str(num) + ".json", True, (255, 255, 255))
                         final_display_text2 = self.font.render("Thank you for using this software, goodbye!", True, (255, 255, 255))
                         self.screen.blit(final_display_text1, (400, 250))
