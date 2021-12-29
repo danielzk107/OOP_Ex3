@@ -35,7 +35,6 @@ class GraphAlgo:
 
     def load_from_json(self, file_name: str) -> bool:
         try:
-            print(file_name)
             temp = open(file_name, 'r')
             jsonfile = json.load(temp)
             for x in jsonfile["Nodes"]:
@@ -232,7 +231,6 @@ class GraphAlgo:
                     if dist > maxdist:
                         maxdist = dist
             maximumshortestpatharr[x] = maxdist
-        # print("AAAAAAA")
         minimum = sys.float_info.max
         centreindex = 0
         for x in self.graph.nodelist:
