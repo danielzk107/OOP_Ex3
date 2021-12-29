@@ -217,13 +217,22 @@ class GraphAlgo:
         if not self.IsConnected():
             return None
         maximumshortestpatharr = {}
+        for a in self.graph.nodelist:
+            for b in self.graph.nodelist:
+                if a != b:
+                    if not self.ranSPD or self.modcount != self.graph.modcount:
+                        self.shortest_path_dist(a, b)
+                    break
+            break
         for x in self.graph.nodelist:
             maxdist = sys.float_info.min
             for y in self.graph.nodelist:
                 if x != y:
-                    if self.shortest_path_dist(x, y) > maxdist:
-                        maxdist = self.shortest_path_dist(x, y)
+                    dist = self.shortest_path_dist(x, y)
+                    if dist > maxdist:
+                        maxdist = dist
             maximumshortestpatharr[x] = maxdist
+        # print("AAAAAAA")
         minimum = sys.float_info.max
         centreindex = 0
         for x in self.graph.nodelist:

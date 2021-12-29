@@ -74,7 +74,7 @@ class GUI:
                         self.shortest_path_text = self.font.render("Please choose two nodes", True, (255, 255, 255))
                         self.Refresh_Topof_Screen()
                         shortestpathclicked = True
-                    if 305 <= mouse[0] <= 440 and 0 <= mouse[1] <= 50:
+                    if 305 <= mouse[0] <= 440 and 0 <= mouse[1] <= 50:  # Centre button clicked
                         try:
                             (centrenodeid, throwaway) = self.algo.centerPoint()
                             if centrenodeid is None:
@@ -92,11 +92,11 @@ class GUI:
                         except TypeError:
                             self.centre_text = self.font.render("Graph not connected", True, (255, 255, 255))
                             self.Refresh_Topof_Screen()
-                    if 480 <= mouse[0] <= 560 and 0 <= mouse[1] <= 50:
+                    if 480 <= mouse[0] <= 560 and 0 <= mouse[1] <= 50:  # Add_node button clicked
                         self.Add_Node_Action()
-                    if 600 <= mouse[0] <= 700 and 0 <= mouse[1] <= 50:
+                    if 600 <= mouse[0] <= 700 and 0 <= mouse[1] <= 50:  # Add_edge button clicked
                         self.Add_Edge_Action()
-                    if 705 <= mouse[0] and 0 <= mouse[1] <= 50:
+                    if 705 <= mouse[0] and 0 <= mouse[1] <= 50:  # Save button clicked
                         num = random.randint(0, 1000)
                         condition = self.algo.save_to_json("Graph" + str(num) + ".json")
                         while not condition:
