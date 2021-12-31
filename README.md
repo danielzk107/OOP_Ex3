@@ -1,7 +1,7 @@
 # OOP_Ex3
 (Disclaimer: during this readme file i mention "we" quite a few times. That is purely for aesthetic and readability reasons, as this assignment was done by myself alone.)
 
-This project is the fourth assignment in the course "Object Oriented Programming". Like the third assignment, this project is about implementing an api of directed weighted graphs and algorithms regarding them. While the last assignment was written in Java, this one is written in Python. [Here](https://github.com/danielzk107/OOP_Ex2) is a link to the previous project. In this README file, we will provide a short explanation for each of the objects and show how we implemented their interfaces, as well as give instructions as to how one can download and run the program. to skip to the explanation of how to install and run the program, click here
+This project is the fourth assignment in the course "Object Oriented Programming". Like the third assignment, this project is about implementing an api of directed weighted graphs and algorithms regarding them. While the last assignment was written in Java, this one is written in Python. [Here](https://github.com/danielzk107/OOP_Ex2) is a link to the previous project. In this README file, we will provide a short explanation for each of the objects and show how we implemented their interfaces, as well as give instructions as to how one can download and run the program. to skip to the explanation of how to install and run the program, click [here](https://github.com/danielzk107/OOP_Ex3#how-to-run)
 
 ## Implementation
 
