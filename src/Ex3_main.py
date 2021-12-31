@@ -29,13 +29,10 @@ def GenerateRandomGraph(nodesize: int, edgesize: int) -> DiGraph.DiGraph:
 
 
 def main():
-    start = time.time() * 1000
-    graph = GenerateRandomGraph(1000, 10000)
-    algo = GraphAlgo.GraphAlgo(graph)
-    algo.centerPoint()
-    end = time.time() * 1000
-    print("start: " + str(start) + ", end: " + str(end))
-    # algo.plot_graph()
+    # graph = GenerateRandomGraph(10000, 100000)
+    algo = GraphAlgo.GraphAlgo()
+    algo.load_from_json("../data/A0.json")
+    algo.plot_graph()
 
 
 if __name__ == '__main__':
