@@ -59,7 +59,7 @@ All function were ran on a graph with the witten node size and an average of 20 
 
 All the values written are in seconds.
 
-centrenode:
+Here is a table with the average runtimes for the centrenode function, which returns the centre node of the graph (if it is connected)
 
 | Size | Java | Python |
 | --- | --- | --- |
