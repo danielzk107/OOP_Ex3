@@ -65,9 +65,14 @@ Here is a table with the average runtimes for the centrenode function, which ret
 | --- | --- | --- |
 | 100 | 0.0034821 |  0.2920946 |
 | 1000 | 0.089724 | 375 |
-| 10000 | 4.53691 | Recursion error |
-| 100000 | heap error | Recursion error |
+| 10000 | 4.53691 | Recursion error* |
+| 100000 | heap error** | Recursion error |
 | 1000000 | heap error | Recursion error |
+
+In this table we can clearly see that the python program (this project) is significantly slower than the java program (the previous project). Because of the immense similarity between the projects, we can conclude that the python language itself is slower than java.
+
+* Recursion error means the program has reached maximum recursion depth
+** Heap error means the program has reached its maximum capacity in terms of memory
 
 ## How To Run
 This project, unlike the previous one, has no executable file. In order to run the program, first, one has to download the code and open it on a Python compiler, such as visual studio or Pycharm (other options are available). Once the project is open in a compatible compiler, open the Ex3_main.py file, where you can run any function you would like on a randomly generated graph of any size you choose. In order to load a graph from a json file, use algo.load_from_json(finlename) instead of generating a random graph. the current main function is in its testing form, so it currently displays the graph loaded from the file "A0.json".
