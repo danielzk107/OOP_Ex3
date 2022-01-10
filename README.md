@@ -71,7 +71,8 @@ Here is a table with the average runtimes for the centrenode function, which ret
 
 In this table we can clearly see that the python program (this project) is significantly slower than the java program (the previous project). Because of the immense similarity between the projects, we can conclude that the python language itself is slower than java.
 
-* Recursion error means the program has reached maximum recursion depth
+\* Recursion error means the program has reached maximum recursion depth
+
 ** Heap error means the program has reached its maximum capacity in terms of memory
 
 ## How To Run
